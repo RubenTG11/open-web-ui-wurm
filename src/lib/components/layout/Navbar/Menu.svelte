@@ -86,13 +86,12 @@
 			const containerElement = document.getElementById('full-messages-container');
 			if (containerElement) {
 				try {
-					const isDarkMode = document.documentElement.classList.contains('dark');
 					const virtualWidth = 800; // px, fixed width for cloned element
 
-					// Clone and style
+					// Clone and style - ALWAYS use light mode for PDF (print-friendly)
 					const clonedElement = containerElement.cloneNode(true);
 					clonedElement.classList.add('text-black');
-					clonedElement.classList.add('dark:text-white');
+					clonedElement.classList.remove('dark:text-white'); // Remove dark mode text
 					clonedElement.style.width = `${virtualWidth}px`;
 					clonedElement.style.position = 'absolute';
 					clonedElement.style.left = '-9999px';
@@ -102,9 +101,9 @@
 					// Wait for DOM update/layout
 					await new Promise((r) => setTimeout(r, 100));
 
-					// Render entire content once
+					// Render entire content once - ALWAYS white background for printing
 					const canvas = await html2canvas(clonedElement, {
-						backgroundColor: isDarkMode ? '#000' : '#fff',
+						backgroundColor: '#ffffff', // Always white background for PDF
 						useCORS: true,
 						scale: 2, // increase resolution
 						width: virtualWidth
@@ -162,18 +161,45 @@
 
 						if (page > 0) pdf.addPage();
 
-						if (isDarkMode) {
-							pdf.setFillColor(0, 0, 0);
-							pdf.rect(0, 0, pageWidthMM, pageHeightMM, 'F'); // black bg
+						// Add WURM Branding - Logo and Header
+						if (page === 0) {
+							// Add WURM logo at top (if logo image exists)
+							try {
+								const logoImg = new Image();
+								logoImg.src = '/img/logo_dark.png';
+								await new Promise((resolve, reject) => {
+									logoImg.onload = resolve;
+									logoImg.onerror = reject;
+									setTimeout(reject, 1000); // timeout after 1s
+								});
+								pdf.addImage(logoImg, 'PNG', 10, 5, 30, 10);
+							} catch (e) {
+								// Logo not loaded, skip
+							}
+
+							// Add header text
+							pdf.setFontSize(10);
+							pdf.setTextColor(100, 100, 100);
+							pdf.text('Erstellt mit Wurm-Ki | WURM Gesamtplanung', pageWidthMM - 10, 10, { align: 'right' });
 						}
 
-						pdf.addImage(imgData, 'JPEG', 0, 0, pageWidthMM, imgHeightMM);
+						// Add content with margin for header
+						const contentMarginTop = page === 0 ? 20 : 0;
+						pdf.addImage(imgData, 'JPEG', 0, contentMarginTop, pageWidthMM, imgHeightMM);
+
+						// Add footer on each page
+						pdf.setFontSize(8);
+						pdf.setTextColor(150, 150, 150);
+						const footerText = `Wurm-Ki | Seite ${page + 1}`;
+						pdf.text(footerText, pageWidthMM / 2, pageHeightMM - 5, { align: 'center' });
 
 						offsetY += sliceHeight;
 						page++;
 					}
 
-					pdf.save(`chat-${chat.chat.title}.pdf`);
+					// Save with WURM branding in filename
+					const timestamp = new Date().toISOString().split('T')[0];
+					pdf.save(`Wurm-Ki_${chat.chat.title}_${timestamp}.pdf`);
 
 					showFullMessages = false;
 				} catch (error) {
@@ -187,11 +213,19 @@
 
 			const doc = new jsPDF();
 
-			// Margins
+			// Margins (increased top for header)
 			const left = 15;
-			const top = 20;
+			const top = 35;
 			const right = 15;
 			const bottom = 20;
+
+			// Add WURM Branding Header on first page
+			doc.setFontSize(12);
+			doc.setTextColor(0, 0, 0);
+			doc.text('Wurm-Ki', 15, 15);
+			doc.setFontSize(8);
+			doc.setTextColor(100, 100, 100);
+			doc.text('WURM Gesamtplanung', 15, 20);
 
 			const pageWidth = doc.internal.pageSize.getWidth();
 			const pageHeight = doc.internal.pageSize.getHeight();
@@ -225,7 +259,18 @@
 				y += lineHeight * 0.1;
 			}
 
-			doc.save(`chat-${chat.chat.title}.pdf`);
+			// Add footer on all pages
+			const pageCount = doc.internal.pages.length - 1; // -1 because pages array includes a null
+			for (let i = 1; i <= pageCount; i++) {
+				doc.setPage(i);
+				doc.setFontSize(8);
+				doc.setTextColor(150, 150, 150);
+				doc.text(`Wurm-Ki | Seite ${i} von ${pageCount}`, pageWidth / 2, pageHeight - 10, { align: 'center' });
+			}
+
+			// Save with WURM branding in filename
+			const timestamp = new Date().toISOString().split('T')[0];
+			doc.save(`Wurm-Ki_${chat.chat.title}_${timestamp}.pdf`);
 		}
 	};
 
