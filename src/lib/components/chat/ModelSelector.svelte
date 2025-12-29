@@ -1,9 +1,7 @@
 <script lang="ts">
-	import { models, showSettings, settings, user, mobile, config } from '$lib/stores';
-	import { onMount, tick, getContext } from 'svelte';
+	import { models, settings } from '$lib/stores';
+	import { getContext } from 'svelte';
 	import { toast } from 'svelte-sonner';
-	import Selector from './ModelSelector/Selector.svelte';
-	import Tooltip from '../common/Tooltip.svelte';
 
 	import { updateUserSettings } from '$lib/apis/users';
 	const i18n = getContext('i18n');
@@ -12,8 +10,6 @@
 	export let disabled = false;
 
 	export let showSetDefault = true;
-
-	let items = [];
 
 	const saveDefaultModel = async () => {
 		const hasEmptyModel = selectedModels.filter((it) => it === '');
@@ -50,43 +46,26 @@
 		}
 	}
 
-	// Convert $models to items format for Selector component
-	$: items = $models.map((model) => ({
-		label: model.name ?? model.id,
-		value: model.id,
-		model: model
-	}));
+	// Automatically select first available model
+	$: if ($models.length > 0 && selectedModels.length === 0) {
+		selectedModels = [$models[0].id];
+	}
 </script>
 
 <div class="flex flex-col w-full items-start">
+	<!-- Auto-selected model display (no dropdown) -->
 	<div class="flex w-full max-w-fit">
 		<div class="overflow-hidden w-full">
 			<div class="max-w-full {($settings?.highContrastMode ?? false) ? 'm-1' : 'mr-1'}">
-				<Selector
-					{items}
-					bind:selectedModels
-					{disabled}
-					on:change
-					on:pin={async (e) => {
-						await pinModelHandler(e.detail);
-					}}
-				/>
+				<div class="flex items-center gap-2 px-3 py-2 text-lg font-medium text-gray-700 dark:text-gray-100">
+					<img
+						src="/img/logo_small.png"
+						alt="Wurm-Ki"
+						class="rounded-full size-5"
+					/>
+					<span>Wurm-Ki</span>
+				</div>
 			</div>
 		</div>
 	</div>
-
-	{#if showSetDefault && selectedModels.length > 0}
-		<div class="flex items-center gap-0.5 -mt-0.5 mx-1.5">
-			<Tooltip content={$i18n.t('Set as default')} placement="bottom-start">
-				<button
-					class="text-left px-2 py-1 text-xs font-medium bg-transparent hover:bg-gray-50 dark:hover:bg-gray-850 transition rounded-full"
-					on:click={() => {
-						saveDefaultModel();
-					}}
-				>
-					{$i18n.t('Set as default')}
-				</button>
-			</Tooltip>
-		</div>
-	{/if}
 </div>
