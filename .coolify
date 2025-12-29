@@ -1,0 +1,15 @@
+# Coolify Configuration for Wurm-Ki
+# This file helps Coolify auto-detect the correct configuration
+
+# Build configuration
+dockerfile=./Dockerfile
+docker-compose=./docker-compose.yml
+
+# Port configuration
+port=8080
+
+# Health check
+healthcheck=/health
+
+# Build arguments (optional)
+build-args=USE_CUDA=false,USE_OLLAMA=false

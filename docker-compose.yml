@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  wurm-ki:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        USE_CUDA: false
+        USE_OLLAMA: false
+    container_name: wurm-ki
+    ports:
+      - "3000:8080"
+    volumes:
+      - wurm-data:/app/backend/data
+    environment:
+      # Application Name
+      - WEBUI_NAME=Wurm-Ki
+
+      # Ollama Configuration
+      - OLLAMA_BASE_URL=${OLLAMA_BASE_URL:-http://host.docker.internal:11434}
+
+      # OpenAI Configuration (optional)
+      - OPENAI_API_BASE_URL=${OPENAI_API_BASE_URL:-}
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+
+      # Security
+      - WEBUI_SECRET_KEY=${WEBUI_SECRET_KEY:-changeme-to-random-string}
+
+      # CORS & Proxy
+      - CORS_ALLOW_ORIGIN=*
+      - FORWARDED_ALLOW_IPS=*
+
+      # Privacy
+      - SCARF_NO_ANALYTICS=true
+      - DO_NOT_TRACK=true
+      - ANONYMIZED_TELEMETRY=false
+
+      # Features (disable what you don't need)
+      - ENABLE_SIGNUP=${ENABLE_SIGNUP:-false}
+      - ENABLE_LOGIN_FORM=${ENABLE_LOGIN_FORM:-true}
+      - DEFAULT_USER_ROLE=${DEFAULT_USER_ROLE:-user}
+
+    restart: unless-stopped
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+volumes:
+  wurm-data:
+    driver: local
