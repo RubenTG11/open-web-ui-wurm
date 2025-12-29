@@ -13,6 +13,8 @@
 
 	export let showSetDefault = true;
 
+	let items = [];
+
 	const saveDefaultModel = async () => {
 		const hasEmptyModel = selectedModels.filter((it) => it === '');
 		if (hasEmptyModel.length) {
@@ -47,6 +49,13 @@
 			selectedModels = _selectedModels;
 		}
 	}
+
+	// Convert $models to items format for Selector component
+	$: items = $models.map((model) => ({
+		label: model.name ?? model.id,
+		value: model.id,
+		model: model
+	}));
 </script>
 
 <div class="flex flex-col w-full items-start">
@@ -54,6 +63,7 @@
 		<div class="overflow-hidden w-full">
 			<div class="max-w-full {($settings?.highContrastMode ?? false) ? 'm-1' : 'mr-1'}">
 				<Selector
+					{items}
 					bind:selectedModels
 					{disabled}
 					on:change
