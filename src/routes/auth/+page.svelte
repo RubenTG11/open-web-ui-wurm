@@ -382,7 +382,38 @@
 														: $i18n.t('Create Account')}
 											</button>
 
-											<!-- Sign up option removed for internal use -->
+											<!-- Toggle between Sign in and Sign up -->
+											{#if $config?.features.enable_signup}
+												<div class="mt-4 text-xs text-center w-full">
+													{#if mode === 'signin'}
+														<span class="text-gray-500 dark:text-gray-400">
+															{$i18n.t("Don't have an account?")}
+														</span>
+														<button
+															class="font-medium underline"
+															type="button"
+															on:click={() => {
+																mode = 'signup';
+															}}
+														>
+															{$i18n.t('Sign up')}
+														</button>
+													{:else if mode === 'signup'}
+														<span class="text-gray-500 dark:text-gray-400">
+															{$i18n.t('Already have an account?')}
+														</span>
+														<button
+															class="font-medium underline"
+															type="button"
+															on:click={() => {
+																mode = 'signin';
+															}}
+														>
+															{$i18n.t('Sign in')}
+														</button>
+													{/if}
+												</div>
+											{/if}
 										{/if}
 									{/if}
 								</div>
