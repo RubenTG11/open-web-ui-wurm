@@ -184,7 +184,7 @@
 
 <svelte:head>
 	<title>
-		{`${$WEBUI_NAME}`}
+		Wurm-Ki
 	</title>
 </svelte:head>
 
@@ -192,7 +192,7 @@
 	bind:show={onboarding}
 	getStartedHandler={() => {
 		onboarding = false;
-		mode = $config?.features.enable_ldap ? 'ldap' : 'signup';
+		mode = $config?.features.enable_ldap ? 'ldap' : 'signin';
 	}}
 />
 
@@ -229,9 +229,15 @@
 									<img
 										id="logo"
 										crossorigin="anonymous"
-										src="{WEBUI_BASE_URL}/static/favicon.png"
-										class="size-24 rounded-full"
-										alt=""
+										src="/img/logo_dark.png"
+										class="h-16 w-auto dark:hidden"
+										alt="WURM Gesamtplanung"
+									/>
+									<img
+										crossorigin="anonymous"
+										src="/img/logo_bright.png"
+										class="h-16 w-auto hidden dark:block"
+										alt="WURM Gesamtplanung"
 									/>
 								</div>
 							{/if}
@@ -376,27 +382,7 @@
 														: $i18n.t('Create Account')}
 											</button>
 
-											{#if $config?.features.enable_signup && !($config?.onboarding ?? false)}
-												<div class=" mt-4 text-sm text-center">
-													{mode === 'signin'
-														? $i18n.t("Don't have an account?")
-														: $i18n.t('Already have an account?')}
-
-													<button
-														class=" font-medium underline"
-														type="button"
-														on:click={() => {
-															if (mode === 'signin') {
-																mode = 'signup';
-															} else {
-																mode = 'signin';
-															}
-														}}
-													>
-														{mode === 'signin' ? $i18n.t('Sign up') : $i18n.t('Sign in')}
-													</button>
-												</div>
-											{/if}
+											<!-- Sign up option removed for internal use -->
 										{/if}
 									{/if}
 								</div>
@@ -575,9 +561,15 @@
 						<img
 							id="logo"
 							crossorigin="anonymous"
-							src="{WEBUI_BASE_URL}/static/favicon.png"
-							class=" w-6 rounded-full"
-							alt=""
+							src="/img/logo_dark.png"
+							class="h-8 w-auto dark:hidden"
+							alt="WURM"
+						/>
+						<img
+							crossorigin="anonymous"
+							src="/img/logo_bright.png"
+							class="h-8 w-auto hidden dark:block"
+							alt="WURM"
 						/>
 					</div>
 				</div>

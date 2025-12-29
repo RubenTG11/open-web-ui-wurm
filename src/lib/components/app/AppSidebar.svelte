@@ -26,8 +26,14 @@
 				}}
 			>
 				<img
-					src="{WEBUI_BASE_URL}/static/splash.png"
-					class="size-11 dark:invert p-0.5"
+					src="/img/logo_dark.png"
+					class="size-11 p-0.5 dark:hidden"
+					alt="logo"
+					draggable="false"
+				/>
+				<img
+					src="/img/logo_bright.png"
+					class="size-11 p-0.5 hidden dark:block"
 					alt="logo"
 					draggable="false"
 				/>

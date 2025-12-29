@@ -21,6 +21,11 @@ export default {
 					850: 'var(--color-gray-850, #262626)',
 					900: 'var(--color-gray-900, #171717)',
 					950: 'var(--color-gray-950, #0d0d0d)'
+				},
+				wurm: {
+					green: '#65bc7b',
+					darkgray: '#212934',
+					lightgray: '#f8f9fa'
 				}
 			},
 			typography: {

@@ -69,15 +69,7 @@
 		<Bolt />
 		{$i18n.t('Suggested')}
 	{:else}
-		<!-- Keine Vorschläge -->
-
-		<div
-			class="flex w-full {$settings?.landingPageMode === 'chat'
-				? ' -mt-1'
-				: 'text-center items-center justify-center'}  self-start text-gray-600 dark:text-gray-400"
-		>
-			{$WEBUI_NAME} ‧ v{WEBUI_VERSION}
-		</div>
+		<!-- Version info removed for internal use -->
 	{/if}
 </div>
 

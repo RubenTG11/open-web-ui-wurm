@@ -83,7 +83,7 @@
 			>
 				<div class="flex text-black dark:text-gray-100 line-clamp-1">
 					<img
-						src={`${WEBUI_API_BASE_URL}/models/model/profile/image?id=${model.id}&lang=${$i18n.language}`}
+						src="/img/logo_small.png"
 						alt={model?.name ?? model.id}
 						class="rounded-full size-5 items-center mr-2"
 					/>

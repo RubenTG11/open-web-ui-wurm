@@ -77,7 +77,7 @@
 			<div class="flex items-center min-w-fit">
 				<Tooltip content={$user?.role === 'admin' ? (item?.value ?? '') : ''} placement="top-start">
 					<img
-						src={`${WEBUI_API_BASE_URL}/models/model/profile/image?id=${item.model.id}&lang=${$i18n.language}`}
+						src="/img/logo_small.png"
 						alt="Model"
 						class="rounded-full size-5 flex items-center"
 					/>

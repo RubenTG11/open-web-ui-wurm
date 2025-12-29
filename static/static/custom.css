@@ -1,0 +1,89 @@
+/* WURM Gesamtplanung Custom Branding */
+
+:root {
+  /* WURM Brand Colors */
+  --wurm-green: #65bc7b;
+  --wurm-green-hover: #4fa564;
+  --wurm-dark-gray: #212934;
+  --wurm-light-gray: #f8f9fa;
+  --wurm-black: #000000;
+  --wurm-white: #ffffff;
+}
+
+/* Professional styling for the platform */
+body {
+  font-family: 'Open Sans', 'Avenir', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Primary buttons with WURM green */
+button[type="submit"],
+button.primary,
+.btn-primary,
+button.bg-gray-100.dark\:bg-gray-850:hover {
+  background-color: var(--wurm-green) !important;
+  color: white !important;
+}
+
+button[type="submit"]:hover,
+button.primary:hover,
+.btn-primary:hover {
+  background-color: var(--wurm-green-hover) !important;
+}
+
+/* Accent color for links and interactive elements */
+a.text-blue-600,
+a.hover\:text-blue-500 {
+  color: var(--wurm-green) !important;
+}
+
+a:hover {
+  color: var(--wurm-green-hover) !important;
+}
+
+/* Scrollbar styling with WURM green */
+::-webkit-scrollbar-thumb {
+  background-color: var(--wurm-green);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--wurm-green-hover);
+}
+
+/* Focus states */
+*:focus-visible,
+*:focus {
+  outline-color: var(--wurm-green) !important;
+  border-color: var(--wurm-green) !important;
+}
+
+/* Active states and selections */
+.bg-blue-600,
+.bg-blue-500 {
+  background-color: var(--wurm-green) !important;
+}
+
+.text-blue-600,
+.text-blue-500 {
+  color: var(--wurm-green) !important;
+}
+
+.border-blue-600,
+.border-blue-500 {
+  border-color: var(--wurm-green) !important;
+}
+
+/* Toggle switches and checkboxes */
+input[type="checkbox"]:checked {
+  background-color: var(--wurm-green) !important;
+  border-color: var(--wurm-green) !important;
+}
+
+/* Progress bars */
+.bg-gradient-to-r {
+  background: linear-gradient(to right, var(--wurm-green), var(--wurm-green-hover)) !important;
+}
+
+/* Sidebar active state */
+.bg-gray-200.dark\:bg-gray-900 {
+  border-left: 3px solid var(--wurm-green);
+}
