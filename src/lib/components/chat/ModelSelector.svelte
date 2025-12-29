@@ -8,13 +8,10 @@
 	import { updateUserSettings } from '$lib/apis/users';
 	const i18n = getContext('i18n');
 
-	export let selectedModels = ['wurm-ki'];
+	export let selectedModels = [];
 	export let disabled = false;
 
 	export let showSetDefault = true;
-
-	// Lock to wurm-ki model
-	$: selectedModels = ['wurm-ki'];
 
 	const saveDefaultModel = async () => {
 		const hasEmptyModel = selectedModels.filter((it) => it === '');
@@ -53,21 +50,33 @@
 </script>
 
 <div class="flex flex-col w-full items-start">
-	<!-- Locked Wurm-Ki Model Display -->
 	<div class="flex w-full max-w-fit">
 		<div class="overflow-hidden w-full">
 			<div class="max-w-full {($settings?.highContrastMode ?? false) ? 'm-1' : 'mr-1'}">
-				<div class="flex items-center gap-2 px-3 py-2 text-lg font-medium text-gray-700 dark:text-gray-100">
-					<img
-						src="/img/logo_small.png"
-						alt="Wurm-Ki"
-						class="rounded-full size-5"
-					/>
-					<span>Wurm-Ki</span>
-				</div>
+				<Selector
+					bind:selectedModels
+					{disabled}
+					on:change
+					on:pin={async (e) => {
+						await pinModelHandler(e.detail);
+					}}
+				/>
 			</div>
 		</div>
 	</div>
-</div>
 
-<!-- Set as default button hidden for locked model -->
+	{#if showSetDefault && selectedModels.length > 0}
+		<div class="flex items-center gap-0.5 -mt-0.5 mx-1.5">
+			<Tooltip content={$i18n.t('Set as default')} placement="bottom-start">
+				<button
+					class="text-left px-2 py-1 text-xs font-medium bg-transparent hover:bg-gray-50 dark:hover:bg-gray-850 transition rounded-full"
+					on:click={() => {
+						saveDefaultModel();
+					}}
+				>
+					{$i18n.t('Set as default')}
+				</button>
+			</Tooltip>
+		</div>
+	{/if}
+</div>
